@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}Analysis Result · PhishGuard{% endblock %}
+
+{% block content %}
+<section class="result-hero">
+    <div>
+        <span class="section-kicker">Analysis complete</span>
+        <h1>Risk assessment dashboard</h1>
+        <p>{{ result.confidence_note }}</p>
+    </div>
+    <div class="result-actions">
+        <a class="button button-secondary" href="{{ url_for('index') }}">Analyse Another</a>
+        <form method="post" action="{{ url_for('download_report') }}">
+            {% for field, value in email.items() %}
+            <input type="hidden" name="{{ field }}" value="{{ value }}">
+            {% endfor %}
+            <input type="hidden" name="authorised" value="true">
+            <button class="button button-primary" type="submit">Download Text Report</button>
+        </form>
+    </div>
+</section>
+
+<section class="score-layout">
+    <article class="panel score-card risk-{{ result.risk_category|lower|replace(' ', '-') }}">
+        <div class="score-ring">
+            <span class="score-value">{{ result.score }}</span>
+            <span class="score-total">/ 100</span>
+        </div>
+        <div class="score-copy">
+            <span class="risk-label">{{ result.risk_category }}</span>
+            <h2>Overall heuristic score</h2>
+            <progress max="100" value="{{ result.score }}" aria-label="Risk score {{ result.score }} out of 100">{{ result.score }}%</progress>
+            <p><strong>{{ result.indicator_count }}</strong> warning indicator{% if result.indicator_count != 1 %}s{% endif %} detected.</p>
+        </div>
+    </article>
+
+    <div class="component-grid">
+        {% set component_icons = {'sender': '◎', 'content': '≡', 'url': '↗', 'attachment': '▱'} %}
+        {% for name, component in result.components.items() %}
+        <article class="component-card">
+            <div class="component-top">
+                <span class="signal-icon" aria-hidden="true">{{ component_icons[name] }}</span>
+                <span class="level-badge level-{{ component.level|lower }}">{{ component.level }}</span>
+            </div>
+            <h3>{{ name|title }} risk</h3>
+            <strong>{{ component.points }} points</strong>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+{% if result.indicators %}
+<section class="panel indicators-panel">
+    <div class="panel-heading">
+        <div>
+            <span class="section-kicker">Triggered rules</span>
+            <h2>Why this message was flagged</h2>
+        </div>
+        <span class="privacy-pill">{{ result.indicator_count }} findings</span>
+    </div>
+    <div class="indicator-list">
+        {% for item in result.indicators %}
+        <article class="indicator-item">
+            <div class="indicator-index" aria-hidden="true">{{ loop.index }}</div>
+            <div class="indicator-copy">
+                <div class="indicator-title-row">
+                    <h3>{{ item.title }}</h3>
+                    <span class="points-badge">+{{ item.points }} points</span>
+                </div>
+                <span class="category-tag">{{ item.category|title }}</span>
+                <p>{{ item.explanation }}</p>
+                {% if item.matches %}
+                <p class="matched-terms"><strong>Matched:</strong> {{ item.matches|join(', ') }}</p>
+                {% endif %}
+                <div class="action-note"><strong>Recommended action:</strong> {{ item.action }}</div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% else %}
+<section class="panel empty-state">
+    <span class="empty-icon" aria-hidden="true">✓</span>
+    <h2>No configured warning rules were triggered</h2>
+    <p>This does not prove the email is safe. Verify unexpected requests through a trusted channel.</p>
+</section>
+{% endif %}
+
+<div class="detail-grid">
+    <section class="panel">
+        <span class="section-kicker">Content inspection</span>
+        <h2>Highlighted message body</h2>
+        <div class="message-preview">
+            {% if result.highlighted_body %}
+            {{ result.highlighted_body|safe }}
+            {% else %}
+            <span class="muted">No email body was entered.</span>
+            {% endif %}
+        </div>
+        {% if result.mitigations %}
+        <div class="mitigation-box">
+            {% for item in result.mitigations %}
+            <strong>{{ item.title }} ({{ item.points }} points)</strong>
+            <p>{{ item.explanation }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <span class="section-kicker">Safe next steps</span>
+        <h2>Recommended behaviour</h2>
+        <ul class="check-list">
+            <li>Verify the complete sender address.</li>
+            <li>Open the official service independently.</li>
+            <li>Never share passwords, OTPs, PINs, or recovery codes.</li>
+            <li>Confirm payment requests through another channel.</li>
+            <li>Report suspicious messages to the appropriate administrator.</li>
+        </ul>
+        <a class="text-link" href="{{ url_for('awareness') }}">Read the complete awareness guide →</a>
+    </section>
+</div>
+
+<section class="disclaimer-card" role="note">
+    <strong>Educational disclaimer</strong>
+    <p>No URL was visited and no attachment was uploaded or executed. Rules can produce false positives and false negatives; use trained human review and approved security tools for real incidents.</p>
+</section>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}About Project · PhishGuard{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+    <span class="section-kicker">Mini Project 1 · Phishing Mail</span>
+    <h1>Transparent detection for safer learning.</h1>
+    <p>PhishGuard is a student-friendly, local Flask application that converts common phishing warning signs into an explainable heuristic score. It demonstrates defensive thinking without sending messages, visiting links, or handling files.</p>
+</section>
+
+<div class="about-grid">
+    <section class="panel">
+        <span class="section-kicker">Project objective</span>
+        <h2>What this application teaches</h2>
+        <p>The project separates an email into sender, content, URL, and attachment-filename signals. Each triggered rule contributes visible points and a practical recommendation, so learners can explain both the result and its limitations.</p>
+        <ul class="check-list">
+            <li>Recognise social-engineering patterns.</li>
+            <li>Read sender and destination domains carefully.</li>
+            <li>Understand risky filename extensions.</li>
+            <li>Apply independent verification habits.</li>
+        </ul>
+    </section>
+    <section class="panel boundary-panel">
+        <span class="section-kicker">Safety boundaries</span>
+        <h2>Intentionally not included</h2>
+        <ul class="boundary-list">
+            <li>Email sending or account integration</li>
+            <li>Credential forms or login-page imitation</li>
+            <li>URL requests, DNS lookups, or website scanning</li>
+            <li>File uploads, downloads, or execution</li>
+            <li>History, tracking, analytics, or authentication</li>
+            <li>Production-grade detection claims</li>
+        </ul>
+    </section>
+</div>
+
+<section class="panel">
+    <div class="panel-heading">
+        <div>
+            <span class="section-kicker">Explainable model</span>
+            <h2>Core risk weights</h2>
+        </div>
+        <span class="privacy-pill">Capped at 100</span>
+    </div>
+    <div class="weights-grid">
+        {% for rule, points in risk_weights.items() %}
+        <div class="weight-row">
+            <span>{{ rule|replace('_', ' ')|title }}</span>
+            <strong>+{{ points }}</strong>
+        </div>
+        {% endfor %}
+    </div>
+    <p class="confidence-box">A personalised greeting may subtract 3 points, but can never prove that a message is legitimate. The final category is Low (0–24), Suspicious (25–49), High (50–74), or Critical (75–100).</p>
+</section>
+{% endblock %}

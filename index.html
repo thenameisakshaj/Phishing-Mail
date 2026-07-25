@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block title %}Analyse Email · PhishGuard{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="eyebrow"><span class="status-dot"></span> Educational threat analysis</div>
+    <h1>Inspect the signals.<br><span class="gradient-text">Understand the risk.</span></h1>
+    <p>Enter a fictional or authorised email sample. PhishGuard explains the social-engineering, link, sender, and attachment-filename warning signs it finds.</p>
+    <div class="hero-proof" aria-label="Safety safeguards">
+        <span>✓ Offline URL inspection</span>
+        <span>✓ Explainable scoring</span>
+        <span>✓ No data history</span>
+    </div>
+</section>
+
+{% if errors %}
+<section class="alert alert-error" role="alert" aria-labelledby="validation-title">
+    <strong id="validation-title">Please correct the following:</strong>
+    <ul>
+        {% for error in errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
+
+<div class="workspace-grid">
+    <section class="panel form-panel">
+        <div class="panel-heading">
+            <div>
+                <span class="section-kicker">01 · Email input</span>
+                <h2>Sample email details</h2>
+            </div>
+            <span class="privacy-pill">Local only</span>
+        </div>
+
+        <form id="analysis-form" method="post" action="{{ url_for('analyze') }}" novalidate>
+            <fieldset>
+                <legend>Message identity</legend>
+                <div class="form-grid two-columns">
+                    <div class="field">
+                        <label for="sender_name">Sender name</label>
+                        <input id="sender_name" name="sender_name" maxlength="120"
+                               value="{{ form_data.get('sender_name', '') }}"
+                               placeholder="NorthStar Learning">
+                    </div>
+                    <div class="field">
+                        <label for="sender_email">Sender email address</label>
+                        <input id="sender_email" name="sender_email" type="email"
+                               maxlength="254"
+                               value="{{ form_data.get('sender_email', '') }}"
+                               placeholder="notices@northstar.example.org"
+                               autocomplete="off">
+                    </div>
+                    <div class="field">
+                        <label for="recipient">Recipient name or email</label>
+                        <input id="recipient" name="recipient" maxlength="254"
+                               value="{{ form_data.get('recipient', '') }}"
+                               placeholder="Ava Student">
+                    </div>
+                    <div class="field">
+                        <label for="subject">Email subject</label>
+                        <input id="subject" name="subject" maxlength="300"
+                               value="{{ form_data.get('subject', '') }}"
+                               placeholder="Workshop schedule for next week">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Message content</legend>
+                <div class="field">
+                    <label for="body">Email body</label>
+                    <textarea id="body" name="body" rows="10" maxlength="10000"
+                              placeholder="Paste fictional or authorised email text here…">{{ form_data.get('body', '') }}</textarea>
+                    <span class="field-hint"><span id="body-count">0</span> / 10,000 characters</span>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Link and attachment clues</legend>
+                <div class="form-grid two-columns">
+                    <div class="field">
+                        <label for="displayed_link">
+                            Displayed link text
+                            <span class="tooltip" title="What the email claims the link is or shows to the reader." aria-label="Displayed-link help">?</span>
+                        </label>
+                        <input id="displayed_link" name="displayed_link" maxlength="1000"
+                               value="{{ form_data.get('displayed_link', '') }}"
+                               placeholder="https://portal.northstar.example.org">
+                    </div>
+                    <div class="field">
+                        <label for="actual_url">
+                            Actual URL
+                            <span class="tooltip" title="The destination copied as text. PhishGuard never opens it." aria-label="Actual-URL help">?</span>
+                        </label>
+                        <input id="actual_url" name="actual_url" maxlength="2048"
+                               value="{{ form_data.get('actual_url', '') }}"
+                               placeholder="https://portal.northstar.example.org/course">
+                    </div>
+                    <div class="field full-width">
+                        <label for="attachment_filename">
+                            Attachment filename
+                            <span class="tooltip" title="Filename only. Files cannot be uploaded or executed." aria-label="Attachment help">?</span>
+                        </label>
+                        <input id="attachment_filename" name="attachment_filename"
+                               maxlength="255"
+                               value="{{ form_data.get('attachment_filename', '') }}"
+                               placeholder="schedule.pdf">
+                    </div>
+                </div>
+            </fieldset>
+
+            <label class="consent-box" for="authorised">
+                <input id="authorised" name="authorised" type="checkbox" required>
+                <span>
+                    <strong>I confirm this sample is fictional, harmless, or authorised for analysis.</strong>
+                    <small>Never paste passwords, OTPs, private keys, or sensitive personal data.</small>
+                </span>
+            </label>
+
+            <div class="form-actions">
+                <button class="button button-primary" id="analyse-button" type="submit" disabled>
+                    <span aria-hidden="true">⌁</span> Analyse Email
+                </button>
+                <button class="button button-secondary" id="clear-button" type="button">
+                    Clear Form
+                </button>
+                <a class="button button-ghost" href="{{ url_for('reset') }}">Reset Application</a>
+            </div>
+        </form>
+    </section>
+
+    <aside class="side-stack">
+        <section class="panel sample-panel">
+            <span class="section-kicker">02 · Guided examples</span>
+            <h2>Sample email library</h2>
+            <p>Load harmless, reserved-domain examples to see how the rules respond.</p>
+            <div class="field">
+                <label for="sample-select">Choose a fictional sample</label>
+                <select id="sample-select">
+                    <option value="">Select a sample…</option>
+                    {% for sample in samples %}
+                    <option value="{{ sample.id }}">{{ sample.name }} · {{ sample.expected_risk_category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button class="button button-secondary button-full" id="load-sample-button"
+                    type="button" disabled>Load Sample Email</button>
+            <div id="sample-explanation" class="sample-explanation" aria-live="polite"></div>
+        </section>
+
+        <section class="panel signal-panel">
+            <span class="section-kicker">What gets checked</span>
+            <ul class="signal-list">
+                <li><span class="signal-icon" aria-hidden="true">◎</span><span><strong>Sender identity</strong><small>Domain shape and claimed identity</small></span></li>
+                <li><span class="signal-icon" aria-hidden="true">↗</span><span><strong>Link destination</strong><small>Parsed as text, never visited</small></span></li>
+                <li><span class="signal-icon" aria-hidden="true">▱</span><span><strong>Attachment name</strong><small>Extension checks without upload</small></span></li>
+                <li><span class="signal-icon" aria-hidden="true">!</span><span><strong>Social engineering</strong><small>Urgency, secrecy, and requests</small></span></li>
+            </ul>
+        </section>
+    </aside>
+</div>
+{% endblock %}

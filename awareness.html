@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Awareness Guide · PhishGuard{% endblock %}
+
+{% block content %}
+<section class="page-intro">
+    <span class="section-kicker">Defensive learning centre</span>
+    <h1>Recognise the message behind the manipulation.</h1>
+    <p>Phishing is fraudulent communication designed to make a person reveal information, transfer money, open harmful content, or weaken security. It often combines a believable story with pressure and a risky action.</p>
+</section>
+
+<section class="panel anatomy-panel">
+    <div class="panel-heading">
+        <div>
+            <span class="section-kicker">Message anatomy</span>
+            <h2>How a phishing email is structured</h2>
+        </div>
+    </div>
+    <div class="anatomy-flow">
+        <article><span>01</span><h3>Claimed identity</h3><p>A familiar authority, colleague, or service is imitated.</p></article>
+        <article><span>02</span><h3>Emotional trigger</h3><p>Fear, curiosity, scarcity, urgency, or reward narrows attention.</p></article>
+        <article><span>03</span><h3>Requested action</h3><p>The reader is asked to click, reply, pay, share, or open a file.</p></article>
+        <article><span>04</span><h3>Harmful outcome</h3><p>Information, money, access, or device security may be compromised.</p></article>
+    </div>
+</section>
+
+<section class="card-grid three-columns">
+    <article class="knowledge-card"><span aria-hidden="true">!</span><h2>Fear and urgency</h2><p>Threats of suspension, penalties, or immediate loss discourage careful checking.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">♜</span><h2>Authority impersonation</h2><p>A message may claim to come from leadership, support, a bank, or an administrator.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">⌛</span><h2>Scarcity</h2><p>Limited time or availability creates pressure to act before verifying.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">?</span><h2>Curiosity</h2><p>Unexpected documents, private news, or vague alerts tempt the reader to click.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">◇</span><h2>Financial reward</h2><p>Prizes, refunds, commissions, or impossible returns can hide payment fraud.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">⌁</span><h2>Account warnings</h2><p>Security alerts may push a fake verification process or rushed credential entry.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">•••</span><h2>Credential theft</h2><p>Passwords, OTPs, PINs, and recovery codes should never be shared through email.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">▱</span><h2>Malicious attachments</h2><p>Unexpected archives, executables, scripts, or macro documents can carry harmful code.</p></article>
+    <article class="knowledge-card"><span aria-hidden="true">↗</span><h2>Link manipulation</h2><p>Displayed text, confusing subdomains, redirects, and look-alike characters can conceal destinations.</p></article>
+</section>
+
+<div class="awareness-grid">
+    <section class="panel">
+        <span class="section-kicker">Prevention checklist</span>
+        <h2>How to Verify a Suspicious Email</h2>
+        <ul class="check-list">
+            <li>Check the complete sender address.</li>
+            <li>Hover over links before opening them.</li>
+            <li>Do not share passwords or OTPs.</li>
+            <li>Contact the organisation using its official website or phone number.</li>
+            <li>Avoid opening unexpected attachments.</li>
+            <li>Check spelling and domain names.</li>
+            <li>Use multi-factor authentication.</li>
+            <li>Report suspicious emails.</li>
+            <li>Update security software.</li>
+            <li>Verify payment requests through another communication channel.</li>
+        </ul>
+    </section>
+
+    <section class="panel incident-panel">
+        <span class="section-kicker">Defensive response</span>
+        <h2>What to Do After Clicking a Phishing Link</h2>
+        <ol class="number-list">
+            <li>Disconnect from the network if malware is suspected.</li>
+            <li>Change affected passwords from a trusted device.</li>
+            <li>Enable multi-factor authentication.</li>
+            <li>Contact the relevant service provider.</li>
+            <li>Notify the bank if payment information was entered.</li>
+            <li>Run a trusted security scan.</li>
+            <li>Report the incident.</li>
+            <li>Monitor account activity.</li>
+        </ol>
+    </section>
+</div>
+{% endblock %}

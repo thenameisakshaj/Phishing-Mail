@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="PhishGuard educational phishing email risk analyser">
+    <title>{% block title %}PhishGuard{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <header class="site-header">
+        <nav class="nav-shell" aria-label="Primary navigation">
+            <a class="brand" href="{{ url_for('index') }}" aria-label="PhishGuard home">
+                <span class="brand-mark" aria-hidden="true">◇</span>
+                <span>Phish<span class="accent-text">Guard</span></span>
+            </a>
+            <button class="nav-toggle" type="button" aria-expanded="false"
+                    aria-controls="primary-links">Menu</button>
+            <div class="nav-links" id="primary-links">
+                <a href="{{ url_for('index') }}"
+                   {% if request.endpoint in ('index', 'analyze') %}aria-current="page"{% endif %}>
+                    Analyse
+                </a>
+                <a href="{{ url_for('awareness') }}"
+                   {% if request.endpoint == 'awareness' %}aria-current="page"{% endif %}>
+                    Awareness
+                </a>
+                <a href="{{ url_for('about') }}"
+                   {% if request.endpoint == 'about' %}aria-current="page"{% endif %}>
+                    About
+                </a>
+            </div>
+        </nav>
+        <div class="education-banner" role="note">
+            <span aria-hidden="true">ⓘ</span>
+            <span>This tool is for phishing-awareness education only. It does not guarantee that an email is safe or malicious.</span>
+        </div>
+    </header>
+
+    <main id="main-content" class="page-shell">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <p>PhishGuard · Local, offline-by-design email awareness analysis</p>
+        <p>No emails sent · No links opened · No attachments uploaded</p>
+    </footer>
+
+    <div class="loading-overlay" id="loading-overlay" role="status"
+         aria-live="polite" aria-hidden="true">
+        <div class="loading-card">
+            <span class="spinner" aria-hidden="true"></span>
+            <strong>Analysing the sample…</strong>
+            <span>Applying transparent rules locally.</span>
+        </div>
+    </div>
+</body>
+</html>
