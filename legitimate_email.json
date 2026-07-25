@@ -1,0 +1,13 @@
+{
+  "name": "Legitimate Email",
+  "sender_name": "NorthStar Learning",
+  "sender_email": "notices@learn.northstar.example.org",
+  "recipient": "Ava Student",
+  "subject": "Workshop schedule for next week",
+  "body": "Hello Ava,\n\nYour defensive computing workshop is scheduled for Tuesday at 10:00. The course calendar contains the room number and reading list. No reply is required.\n\nRegards,\nNorthStar Learning",
+  "displayed_link": "https://learn.northstar.example.org/course/calendar",
+  "actual_url": "https://learn.northstar.example.org/course/calendar",
+  "attachment_filename": "workshop_schedule.pdf",
+  "expected_risk_category": "Low Risk",
+  "explanation": "The fictional sender identity and link destination agree, the greeting is personalised, and the attachment has an ordinary document extension."
+}

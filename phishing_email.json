@@ -1,0 +1,13 @@
+{
+  "name": "Obvious Phishing Email",
+  "sender_name": "Acme Student Portal Security",
+  "sender_email": "support@acme-security-check.example.net",
+  "recipient": "Student",
+  "subject": "URGENT ACTION REQUIRED - Account suspended",
+  "body": "Dear User,\n\nFINAL WARNING!!! Your account will be suspended within 2 hours. Click here and verify immediately with your password, OTP, PIN, card number and CVV. Open the attachment and keep this secret. Disable antivirus if a warning appears. Claim your prize after verification!!!!\n\nPortal Security Team",
+  "displayed_link": "https://portal.acme.example.org/login",
+  "actual_url": "http://198.51.100.42/verify/account.exe?redirect=https%3A%2F%2Fexample.invalid",
+  "attachment_filename": "security_notice.pdf.exe",
+  "expected_risk_category": "Critical Phishing Risk",
+  "explanation": "This harmless example combines urgency, credential and financial-data requests, a mismatched IP-based HTTP link, a suspicious download path, and a deceptive executable attachment filename."
+}

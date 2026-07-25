@@ -1,0 +1,13 @@
+{
+  "name": "Suspicious Email",
+  "sender_name": "BluePeak Services",
+  "sender_email": "billing@bluepeak-notices.example.net",
+  "recipient": "Ava Student",
+  "subject": "Document available for review",
+  "body": "Hello Ava,\n\nA billing document is available for your review. Confirm the request with your usual BluePeak contact before taking any action.\n\nBluePeak Services",
+  "displayed_link": "https://billing.bluepeak.example.org/document",
+  "actual_url": "https://bluepeak-docs.example.net/document",
+  "attachment_filename": "billing_documents.zip",
+  "expected_risk_category": "Suspicious",
+  "explanation": "The visible and actual link destinations do not match, and the compressed archive could conceal another file. The message should be independently verified."
+}
